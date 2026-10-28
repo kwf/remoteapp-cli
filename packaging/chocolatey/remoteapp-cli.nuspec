@@ -1,0 +1,20 @@
+
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>remoteapp-cli</id>
+    <version>0.1.0</version>
+    <title>RemoteApp CLI</title>
+    <authors>KWF</authors>
+    <owners>KWF</owners>
+    <description>
+      Command-line management of Windows RemoteApp registry definitions.
+    </description>
+    <projectUrl>https://github.com/kwf/remoteapp-cli</projectUrl>
+    <license type="expression">MIT</license>
+    <tags>remoteapp rds powershell windows-server cli</tags>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
