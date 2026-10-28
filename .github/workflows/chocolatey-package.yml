@@ -150,3 +150,29 @@ jobs:
           path: dist/*.nupkg
           if-no-files-found: error
           retention-days: 30
+
+
+      - name: Publish to Chocolatey Community Repository
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          CHOCO_API_KEY: ${{ secrets.CHOCO_API_KEY }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+
+          $packages = @(Get-ChildItem 'dist/*.nupkg' -File)
+
+          if ($packages.Count -ne 1) {
+            throw "Expected exactly one .nupkg in dist; found $($packages.Count)."
+          }
+
+          if ([string]::IsNullOrWhiteSpace($env:CHOCO_API_KEY)) {
+            throw "CHOCO_API_KEY secret is not configured."
+          }
+
+          choco push $packages[0].FullName `
+            --source 'https://push.chocolatey.org/' `
+            --api-key $env:CHOCO_API_KEY
+
+          if ($LASTEXITCODE -ne 0) {
+            throw "Chocolatey publish failed with exit code $LASTEXITCODE"
+          }
